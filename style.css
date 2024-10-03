@@ -264,7 +264,9 @@ body {
     -webkit-animation: bounce 0.8s ease infinite;
     animation: bounce 0.8s ease infinite;
 }
-
+.button:last-child {
+    margin-right: 0;
+}
 .button {
     position: relative;
     background: white;
@@ -276,6 +278,8 @@ body {
     outline: none !important;
     cursor: pointer;
     font-size: 18px;
+	margin-bottom: 50px;
+	margin-right: 50px;
 
 }
 .button:after {
@@ -440,7 +444,7 @@ h1 {
 }
 
 .logo {
-    max-width: 240px;
+    max-width: 400px;
     margin: 30px 20px 0;
 }
 
