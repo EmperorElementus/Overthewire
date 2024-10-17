@@ -116,30 +116,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const handleKick = () => {
-        enemies.forEach(enemy => {
-            const damage = Math.floor(Math.random() * 20) + 1;
-            enemy.receiveDamage(damage, character.name);
-        });
+    const createClickCounter = (button, limit) => {
+        let clickCount = 0;
 
-        const characterDamage = Math.floor(Math.random() * 20) + 1;
-        character.receiveDamage(characterDamage, enemies[Math.floor(Math.random() * enemies.length)].name);
-
-        checkGameOver();
+        return () => {
+            if (clickCount < limit) {
+                clickCount++;
+                console.log(`Кнопка натиснута ${clickCount} разів. Залишилось ${limit - clickCount} натискань.`);
+                return true;
+            } else {
+                console.log('Кнопка більше не активна.');
+                return false;
+            }
+        };
     };
 
-    const handleKickStrong = () => {
-        enemies.forEach(enemy => {
-            const damage = Math.floor(Math.random() * 30) + 1;
-            enemy.receiveDamage(damage, character.name);
-        });
+    const handleKick = createClickCounter(document.getElementById('btn-kick'), 6);
+    const handleKickStrong = createClickCounter(document.getElementById('btn-kick-strong'), 6);
 
-        const characterDamage = Math.floor(Math.random() * 30) + 1;
-        character.receiveDamage(characterDamage, enemies[Math.floor(Math.random() * enemies.length)].name);
+    const onKick = () => {
+        if (handleKick()) {
+            enemies.forEach(enemy => {
+                const damage = Math.floor(Math.random() * 20) + 1;
+                enemy.receiveDamage(damage, character.name);
+            });
 
-        checkGameOver();
+            const characterDamage = Math.floor(Math.random() * 20) + 1;
+            character.receiveDamage(characterDamage, enemies[Math.floor(Math.random() * enemies.length)].name);
+            checkGameOver();
+        }
     };
 
-    document.getElementById('btn-kick').addEventListener('click', handleKick);
-    document.getElementById('btn-kick-strong').addEventListener('click', handleKickStrong);
+    const onKickStrong = () => {
+        if (handleKickStrong()) {
+            enemies.forEach(enemy => {
+                const damage = Math.floor(Math.random() * 30) + 1;
+                enemy.receiveDamage(damage, character.name);
+            });
+
+            const characterDamage = Math.floor(Math.random() * 30) + 1;
+            character.receiveDamage(characterDamage, enemies[Math.floor(Math.random() * enemies.length)].name);
+            checkGameOver();
+        }
+    };
+
+    document.getElementById('btn-kick').addEventListener('click', onKick);
+    document.getElementById('btn-kick-strong').addEventListener('click', onKickStrong);
 });
