@@ -12,6 +12,36 @@ document.addEventListener('DOMContentLoaded', () => {
         '[ПЕРСОНАЖ №1] намагався щось сказати, але раптом [ПЕРСОНАЖ №2] від нудьги розбив брову супротивнику.'
     ];
 
+    class Pokemon {
+        constructor(name, health, progressBarId, healthTextId) {
+            this.name = name;
+            this.health = health;
+            this.maxHealth = health;
+            this.progressBar = document.getElementById(progressBarId);
+            this.healthText = document.getElementById(healthTextId);
+            this.updateHealthBar();
+        }
+
+        updateHealthBar() {
+            this.health = Math.max(this.health, 0);
+            const healthPercentage = (this.health / this.maxHealth) * 100;
+            this.progressBar.style.width = `${healthPercentage}%`;
+            this.healthText.textContent = `${this.health} / ${this.maxHealth}`;
+        }
+
+        receiveDamage(damage, enemyName) {
+            this.health -= damage;
+            this.updateHealthBar();
+            const logMessage = this.getRandomLog(this.name, enemyName);
+            addLog(`${logMessage} ${this.name} отримав ${damage} пошкоджень. Залишилось ${this.health} HP.`);
+        }
+
+        getRandomLog(character1, character2) {
+            const randomIndex = Math.floor(Math.random() * logs.length);
+            return logs[randomIndex].replace('[ПЕРСОНАЖ №1]', character1).replace('[ПЕРСОНАЖ №2]', character2);
+        }
+    }
+
     const logsDiv = document.createElement('div');
     logsDiv.id = 'logs';
     document.body.appendChild(logsDiv);
@@ -22,79 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
         logsDiv.prepend(newLog);
     };
 
-    const getRandomLog = (character1, character2) => {
-        const randomIndex = Math.floor(Math.random() * logs.length);
-        return logs[randomIndex].replace('[ПЕРСОНАЖ №1]', character1).replace('[ПЕРСОНАЖ №2]', character2);
-    };
-
-    const character = {
-        name: 'Pikachu',
-        health: 100,
-        maxHealth: 100,
-        progressBar: document.getElementById('progressbar-character'),
-        healthText: document.getElementById('health-character'),
-
-        updateHealthBar() {
-            const { health, maxHealth, progressBar, healthText } = this;
-            this.health = Math.max(health, 0);
-            const healthPercentage = (this.health / maxHealth) * 100;
-            progressBar.style.width = `${healthPercentage}%`;
-            healthText.textContent = `${this.health} / ${this.maxHealth}`;
-        },
-
-        receiveDamage(damage, enemyName) {
-            this.health -= damage;
-            this.updateHealthBar();
-            const logMessage = getRandomLog(this.name, enemyName);
-            addLog(`${logMessage} ${this.name} отримав ${damage} пошкоджень. Залишилось ${this.health} HP.`);
-        },
-    };
-
+    const character = new Pokemon('Pikachu', 100, 'progressbar-character', 'health-character');
     const enemies = [
-        {
-            name: 'Charmander',
-            health: 100,
-            maxHealth: 100,
-            progressBar: document.getElementById('progressbar-enemy'),
-            healthText: document.getElementById('health-enemy'),
-
-            updateHealthBar() {
-                const { health, maxHealth, progressBar, healthText } = this;
-                this.health = Math.max(health, 0);
-                const healthPercentage = (this.health / maxHealth) * 100;
-                progressBar.style.width = `${healthPercentage}%`;
-                healthText.textContent = `${this.health} / ${this.maxHealth}`;
-            },
-
-            receiveDamage(damage, characterName) {
-                this.health -= damage;
-                this.updateHealthBar();
-                const logMessage = getRandomLog(this.name, characterName);
-                addLog(`${logMessage} ${this.name} отримав ${damage} пошкоджень. Залишилось ${this.health} HP.`);
-            },
-        },
-        {
-            name: 'Squirtle',
-            health: 100,
-            maxHealth: 100,
-            progressBar: document.getElementById('progressbar-enemy2'),
-            healthText: document.getElementById('health-enemy2'),
-
-            updateHealthBar() {
-                const { health, maxHealth, progressBar, healthText } = this;
-                this.health = Math.max(health, 0);
-                const healthPercentage = (this.health / maxHealth) * 100;
-                progressBar.style.width = `${healthPercentage}%`;
-                healthText.textContent = `${this.health} / ${this.maxHealth}`;
-            },
-
-            receiveDamage(damage, characterName) {
-                this.health -= damage;
-                this.updateHealthBar();
-                const logMessage = getRandomLog(this.name, characterName);
-                addLog(`${logMessage} ${this.name} отримав ${damage} пошкоджень. Залишилось ${this.health} HP.`);
-            },
-        },
+        new Pokemon('Charmander', 100, 'progressbar-enemy', 'health-enemy'),
+        new Pokemon('Squirtle', 100, 'progressbar-enemy2', 'health-enemy2')
     ];
 
     const checkGameOver = () => {
@@ -118,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const createClickCounter = (button, limit) => {
         let clickCount = 0;
-
         return () => {
             if (clickCount < limit) {
                 clickCount++;
