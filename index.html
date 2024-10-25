@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Pokemon Fight</title>
     <link rel="stylesheet" href="style.css">
@@ -11,78 +10,46 @@
 <body>
 <div class="body">
     <header>
-        <img class="logo"
-             title="Reset Game"
-             src="./assets/Pokemon_logo.png"
-             alt="Pokemon">
+        <img class="logo" title="Reset Game" src="./assets/Pokemon_logo.png" alt="Pokemon">
     </header>
     <div class="playground">
-        <div class="pokemon character">
+        <div class="pokemon character" style="display: none;">
             <span class="lvl">Lv. 1</span>
-
-            <img src="https://static.wikia.nocookie.net/protagonist/images/e/e2/Pikachu_Render.png/revision/latest?cb=20210805193925&path-prefix=ru" class="sprite">
-
+            <img src="" class="sprite" id="character-image">
             <div class="details">
-                <h2 class="name" id="name-character">
-                    Pikachu
-                </h2>
+                <h2 class="name" id="name-character"></h2>
                 <div class="hp">
                     <div class="bar">
                         <div class="health" id="progressbar-character" style="width: 100%;"></div>
                     </div>
-                    <span class="text" id="health-character">100 / 100</span>
+                    <span class="text" id="health-character"></span>
                 </div>
             </div>
         </div>
-
-        <div class="control">
-            <button class="button" id="btn-kick">
-                Thunder Jolt
-            </button>
-            <button class="button" id="btn-kick-strong">
-                Thunder Shock
-            </button>
-        </div>
-
-        <div class="pokemon enemy">
+        <div class="pokemon enemy" style="display: none;">
             <span class="lvl">Lv. 1</span>
-
-            <img src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/004.png" class="sprite">
-
+            <img src="" class="sprite" id="enemy-image">
             <div class="details">
-                <h2 class="name" id="name-enemy">
-                    Charmander
-                </h2>
+                <h2 class="name" id="name-enemy"></h2>
                 <div class="hp">
                     <div class="bar">
                         <div class="health" id="progressbar-enemy" style="width: 100%;"></div>
                     </div>
-                    <span class="text" id="health-enemy">100 / 100</span>
+                    <span class="text" id="health-enemy"></span>
                 </div>
             </div>
         </div>
-
-        <div class="pokemon enemy">
-            <span class="lvl">Lv. 1</span>
-
-            <img src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/007.png" class="sprite">
-
-            <div class="details">
-                <h2 class="name" id="name-enemy2">
-                    Squirtle
-                </h2>
-                <div class="hp">
-                    <div class="bar">
-                        <div class="health" id="progressbar-enemy2" style="width: 100%;"></div>
-                    </div>
-                    <span class="text" id="health-enemy2">100 / 100</span>
-                </div>
-            </div>
+        <div class="control" style="display: none;">
+            <button class="button" id="btn-kick">Thunder Jolt</button>
+            <button class="button" id="btn-kick-strong">Thunder Shock</button>
         </div>
+        <button class="button" id="start-game">Start Game</button>
+        <div id="victory-counter">Victories: <span id="victory-count">0</span></div>
     </div>
+    <div id="logs"></div>
 </div>
-<div class="catch_screen"></div>
-
-<script src="main.js"></script>
+<script type="module" src="js/logs.js"></script>
+<script type="module" src="js/Pokemon.js"></script>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>
