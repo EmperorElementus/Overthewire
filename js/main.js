@@ -10,10 +10,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     authButton.addEventListener("click", () => {
         modalAuth.style.display = "flex";
+        document.body.style.overflow = "hidden";
+        resetInputBorders();
     });
 
     closeAuthButton.addEventListener("click", () => {
-        modalAuth.style.display = "none";
+        closeModal();
+    });
+
+    modalAuth.addEventListener("click", (event) => {
+        if (event.target === modalAuth) {
+            closeModal();
+        }
     });
 
     if (localStorage.getItem("login")) {
@@ -25,14 +33,16 @@ document.addEventListener("DOMContentLoaded", function () {
     loginForm.addEventListener("submit", (event) => {
         event.preventDefault();
         const login = loginInput.value.trim();
+        const password = passwordInput.value.trim();
 
-        if (login) {
+        if (!login || !password) {
+            if (!login) loginInput.style.borderColor = "red";
+            if (!password) passwordInput.style.borderColor = "red";
+            alert("Будь ласка, заповніть усі поля.");
+        } else {
             localStorage.setItem("login", login);
             displayLoggedIn(login);
-            modalAuth.style.display = "none";
-        } else {
-            loginInput.style.borderColor = "red";
-            alert("Будь ласка, введіть логін.");
+            closeModal();
         }
     });
 
@@ -47,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
         userNameSpan.textContent = login;
         userNameSpan.style.display = "inline";
         loginInput.style.borderColor = "";
+        passwordInput.style.borderColor = "";
     }
 
     function displayLoggedOut() {
@@ -56,5 +67,16 @@ document.addEventListener("DOMContentLoaded", function () {
         userNameSpan.style.display = "none";
         loginInput.value = "";
         passwordInput.value = "";
+    }
+
+    function closeModal() {
+        modalAuth.style.display = "none";
+        document.body.style.overflow = "";
+        resetInputBorders();
+    }
+
+    function resetInputBorders() {
+        loginInput.style.borderColor = "";
+        passwordInput.style.borderColor = "";
     }
 });
