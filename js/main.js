@@ -7,6 +7,91 @@ document.addEventListener("DOMContentLoaded", function () {
     const loginInput = document.getElementById("login");
     const passwordInput = document.getElementById("password");
     const userNameSpan = document.querySelector(".user-name");
+    const cardsContainer = document.querySelector(".cards.cards-restaurants");
+
+    const restaurants = [
+        {
+            name: "Піца плюс",
+            time: "50 хвилин",
+            rating: 4.5,
+            price: "від 200 ₴",
+            category: "Піца",
+            image: "img/pizza-plus/preview.jpg"
+        },
+        {
+            name: "Танукі",
+            time: "60 хвилин",
+            rating: 4.5,
+            price: "От 1 200 ₴",
+            category: "Суші, роли",
+            image: "img/tanuki/preview.jpg"
+        },
+        {
+            name: "FoodBand",
+            time: "40 хвилин",
+            rating: 4.5,
+            price: "От 150 ₴",
+            category: "Піца",
+            image: "img/food-band/preview.jpg"
+        },
+        {
+            name: "Ikigai",
+            time: "55 хвилин",
+            rating: 4.5,
+            price: "От 250 ₴",
+            category: "Піца",
+            image: "img/palki-skalki/preview.jpg"
+        },
+        {
+            name: "Пузата хата",
+            time: "75 хвилин",
+            rating: 4.5,
+            price: "От 300 ₴",
+            category: "Українські страви",
+            image: "img/gusi-lebedi/preview.jpg"
+        },
+        {
+            name: "PizzaBurger",
+            time: "45 хвилин",
+            rating: 4.5,
+            price: "От 700 ₴",
+            category: "Піца",
+            image: "img/pizza-burger/preview.jpg"
+        }
+    ];
+
+    function generateRestaurantCards() {
+        restaurants.forEach(restaurant => {
+            const cardHTML = `
+                <a href="#" class="card card-restaurant">
+                    <img src="${restaurant.image}" alt="image" class="card-image" />
+                    <div class="card-text">
+                        <div class="card-heading">
+                            <h3 class="card-title">${restaurant.name}</h3>
+                            <span class="card-tag tag">${restaurant.time}</span>
+                        </div>
+                        <div class="card-info">
+                            <div class="rating">${restaurant.rating}</div>
+                            <div class="price">${restaurant.price}</div>
+                            <div class="category">${restaurant.category}</div>
+                        </div>
+                    </div>
+                </a>
+            `;
+            cardsContainer.insertAdjacentHTML("beforeend", cardHTML);
+        });
+    }
+
+    cardsContainer.addEventListener("click", function (event) {
+        const card = event.target.closest(".card-restaurant");
+
+        if (!card) return;
+
+        if (!localStorage.getItem("login")) {
+            modalAuth.style.display = "flex";
+            document.body.style.overflow = "hidden";
+        }
+    });
 
     authButton.addEventListener("click", () => {
         modalAuth.style.display = "flex";
@@ -79,4 +164,6 @@ document.addEventListener("DOMContentLoaded", function () {
         loginInput.style.borderColor = "";
         passwordInput.style.borderColor = "";
     }
+
+    generateRestaurantCards();
 });
