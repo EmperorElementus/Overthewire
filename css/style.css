@@ -215,18 +215,18 @@ button {
 .section-heading {
     display: flex;
     align-items: center;
-    margin-bottom: 44px;
+    margin-bottom: 20px;
+    margin-top: 44px;
 }
 
 .section-title {
     font-style: normal;
     font-weight: bold;
-    font-size: 36px;
-    line-height: 42px;
-    margin: 0 30px 0 0;
+    font-size: 36px;  
+    line-height: 42px;  
+    margin: -20px 30px 20px 0; 
     color: #000000;
 }
-
 .cards {
     display: flex;
     align-items: flex-start;
@@ -269,12 +269,6 @@ button {
     min-height: auto;
 }
 
-.card-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
 
 .card-title {
     margin: 0;
@@ -346,7 +340,12 @@ button {
     color: #8c8c8c;
     font-size: 18px;
     line-height: 21px;
+    display: flex;
+    justify-content: center; /* Горизонтальное центрирование */
+    align-items: center; /* Вертикальное центрирование */
+    height: 100%; /* Убедитесь, что контейнер имеет высоту, иначе выравнивание не будет работать */
 }
+
 
 .category {
     text-overflow: ellipsis;
@@ -838,3 +837,4 @@ button {
         margin-right: 0;
     }
 }
+
