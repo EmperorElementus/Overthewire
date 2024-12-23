@@ -838,3 +838,29 @@ button {
     }
 }
 
+.clear-search-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.clear-search-btn:hover {
+    background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+.clear-search-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.6);
+}
+
+.clear-search-btn:active {
+    background-color: #c62828;
+    transform: scale(0.98);
+}
