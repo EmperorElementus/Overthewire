@@ -1,58 +1,66 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
 document.addEventListener('DOMContentLoaded', function () {
-    
     fetch('db/partners.json')
         .then(response => response.json())
         .then(restaurantsData => {
+            const restaurantsContainer = document.getElementById('restaurantsContainer');
             const menuContainer = document.getElementById('menuContainer');
             const menuSearchInput = document.getElementById('menuSearchInput');
+            const restaurantTitle = document.querySelector('.restaurant-title');
             const restaurantInfo = document.querySelector('.restaurant-info');
             const searchInput = document.querySelector('.input-search');
+            const clearSearchButton = document.getElementById('clearSearch');
+            const clearMenuSearch = document.getElementById('clearMenuSearch');
             const authModal = document.getElementById('authModal');
             const authButton = document.getElementById('authButton');
-            const restaurantTitle = document.querySelector('.restaurant-title');
             const logoutButton = document.getElementById('logoutButton');
-            const clearMenuSearch = document.getElementById('clearMenuSearch');
+            const closeAuthButton = document.getElementById('closeAuth');
             const logInForm = document.getElementById('logInForm');
             const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
-            const clearSearchButton = document.getElementById('clearSearch');
-            const userLogin = document.getElementById('userLogin');
             const loginName = document.getElementById('loginName');
-            const closeAuthButton = document.getElementById('closeAuth');
-            
-            function resetInputStyles() {
-                usernameInput.style.borderColor = '';
-                passwordInput.style.borderColor = '';
+            const userLogin = document.getElementById('userLogin');
+            const phoneModal = document.getElementById('phoneModal');
+            const phoneNumberInput = document.getElementById('phoneNumberInput');
+            const submitPhoneNumberButton = document.getElementById('submitPhoneNumber');
+            const closePhoneModalButton = document.getElementById('closePhoneModal');
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyBxlN0D_2uRU6o04HmD76mKjeNGP_TIek4",
+                authDomain: "test-41536.firebaseapp.com",
+                databaseURL: "https://test-41536-default-rtdb.firebaseio.com",
+                projectId: "test-41536",
+                storageBucket: "test-41536.appspot.com",
+                messagingSenderId: "562560501749",
+                appId: "1:562560501749:web:d264bd429fd14510c902bc",
+                measurementId: "G-1E1GFS4JRW"
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
+
+            function closeModal() {
+                authModal.style.display = 'none';
+                document.body.style.overflow = '';
+                resetInputStyles();
+                resetInputFields();
             }
 
-            function renderMenu(menuData = []) {
-                if (!menuContainer) {
-                    console.error('menuContainer не найден!');
-                    return;
-                }
+            function showAuthModal() {
+                authModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
 
-                menuContainer.innerHTML = '';
-                menuData.forEach(item => {
-                    const menuCard = `
-                        <div class="card">
-                            <img src="${item.image}" alt="${item.name}" class="card-image" />
-                            <div class="card-text">
-                                <div class="card-heading">
-                                    <h3 class="card-title">${item.name}</h3>  
-                                </div>
-                                <div class="card-info">
-                                    <div class="ingredients">${item.description}</div>  
-                                </div>
-                                <div class="card-buttons">
-                                    <button class="button button-primary button-add-cart">
-                                        <span class="button-card-text">У кошик</span>
-                                    </button>
-                                    <strong class="card-price-bold">${item.price} ₴</strong>  
-                                </div>
-                            </div>
-                        </div>`;
-                    menuContainer.innerHTML += menuCard;
-                });
+            function closePhoneModalFunction() {
+                phoneModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+
+            function showPhoneModal() {
+                phoneModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
             }
 
             function renderRestaurants(filteredData = restaurantsData) {
@@ -96,31 +104,104 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.querySelectorAll('.card').forEach(card => {
                     card.addEventListener('click', function () {
                         if (!localStorage.getItem('username')) {
-                            showAuthModal(); 
+                            showAuthModal();
                         } else {
                             const restaurantName = card.dataset.name;
-                            localStorage.setItem('selectedRestaurant', restaurantName); 
-                            window.location.href = "restaurant.html";  
+                            localStorage.setItem('selectedRestaurant', restaurantName);
+                            window.location.href = "restaurant.html";
                         }
                     });
                 });
             }
 
-            function showAuthModal() {
-                authModal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            }
+            function renderMenu(menuData = []) {
+                if (!menuContainer) {
+                    console.error('menuContainer не найден!');
+                    return;
+                }
 
-            function closeModal() {
-                authModal.style.display = 'none';
-                document.body.style.overflow = '';
-                resetInputStyles();
-                resetInputFields();
-            }
+                menuContainer.innerHTML = '';
+                menuData.forEach(item => {
+                    const menuCard = `
+                        <div class="card" data-id="${item.id}">
+                            <img src="${item.image}" alt="${item.name}" class="card-image" />
+                            <div class="card-text">
+                                <div class="card-heading">
+                                    <h3 class="card-title">${item.name}</h3>  
+                                </div>
+                                <div class="card-info">
+                                    <div class="ingredients">${item.description}</div>  
+                                </div>
+                                <div class="card-buttons">
+                                    <button class="button button-primary button-add-cart">
+                                        <span class="button-card-text">У кошик</span>
+                                    </button>
+                                    <strong class="card-price-bold">${item.price} ₴</strong>  
+                                </div>
+                            </div>
+                        </div>`;
+                    menuContainer.innerHTML += menuCard;
+                });
 
-            function resetInputFields() {
-                usernameInput.value = '';
-                passwordInput.value = '';
+                function requestPhoneNumber() {
+                    let phoneNumber = localStorage.getItem('userPhoneNumber');
+            
+                    if (!phoneNumber) {
+                        phoneNumber = prompt('Введіть будь ласка ваш номер телефона для підтверження:', '');
+                        if (phoneNumber) {
+                            localStorage.setItem('userPhoneNumber', phoneNumber);
+                        }
+                    }
+                    return phoneNumber;
+                }
+
+                 document.querySelectorAll('.button-add-cart').forEach(button => {
+        button.addEventListener('click', function() {
+            const phoneNumber = requestPhoneNumber();
+            if (phoneNumber) {
+                const card = button.closest('.card');
+                const itemId = card.getAttribute('data-id');
+                const itemName = card.querySelector('.card-title').textContent;
+                const itemPrice = parseFloat(card.querySelector('.card-price-bold').textContent);
+
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const existingItemIndex = cart.findIndex(item => item.id === itemId);
+
+                if (existingItemIndex > -1) {
+                    cart[existingItemIndex].quantity += 1;
+                } else {
+                    cart.push({ id: itemId, name: itemName, price: itemPrice, quantity: 1 });
+                }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                const dbRef = ref(db, 'orders');
+                push(dbRef, {
+                    user: localStorage.getItem('username'),
+                    itemId: itemId,
+                    itemName: itemName,
+                    itemPrice: itemPrice,
+                    quantity: 1,
+                    orderDate: new Date().toISOString(),
+                    phoneNumber: phoneNumber,
+                }).then(() => {
+                    console.log('Товар добавлен в Firebase');
+                }).catch(error => {
+                    console.error('Ошибка добавления товара в Firebase:', error);
+                });
+
+                button.innerHTML = '<span class="button-card-text">Додано до кошика</span>';
+                const goToCartButton = document.createElement('button');
+                goToCartButton.classList.add('button', 'button-primary', 'button-go-to-cart');
+                goToCartButton.textContent = '🛒';
+                button.parentElement.appendChild(goToCartButton);
+
+                goToCartButton.addEventListener('click', () => {
+                    window.location.href = 'cart.html';
+                });
+            }
+        });
+    });
             }
 
             function loadMenu() {
@@ -168,6 +249,16 @@ document.addEventListener('DOMContentLoaded', function () {
                             });
                     }
                 }
+            }
+
+            function resetInputStyles() {
+                usernameInput.style.borderColor = '';
+                passwordInput.style.borderColor = '';
+            }
+
+            function resetInputFields() {
+                usernameInput.value = '';
+                passwordInput.value = '';
             }
 
             function searchRestaurants(query) {
@@ -256,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         menuSearchInput.style.backgroundColor = '#f8d7da'; 
                     }
                 });
-
+        
                 menuSearchInput.addEventListener('input', function () {
                     if (menuSearchInput.value.trim() !== '') {
                         menuSearchInput.style.borderColor = '';
@@ -287,69 +378,69 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            if (logInForm) {
-                logInForm.addEventListener('submit', function (event) {
-                    event.preventDefault();
-
-                    let hasError = false;
-
-                    if (usernameInput.value.length < 4 || usernameInput.value.length > 16) {
-                        usernameInput.style.borderColor = 'red';
-                        hasError = true;
-                    } else {
-                        usernameInput.style.borderColor = '';
-                    }
-
-                    if (passwordInput.value.length < 6 || passwordInput.value.length > 20) {
-                        passwordInput.style.borderColor = 'red';
-                        hasError = true;
-                    } else {
-                        passwordInput.style.borderColor = '';
-                    }
-
-                    if (hasError) {
-                        return;
-                    }
-
-                    localStorage.setItem('username', usernameInput.value);
-
-                    authButton.style.display = 'none';
-                    logoutButton.style.display = 'block';
-                    userLogin.style.display = 'block';
-                    loginName.textContent = usernameInput.value;
-
-                    closeModal();
-                });
-            } else {
-                console.error('logInForm не найден!');
-            }
-
             if (logoutButton) {
                 logoutButton.addEventListener('click', function () {
                     localStorage.removeItem('username');
-                    authButton.style.display = 'block';
-                    logoutButton.style.display = 'none';
+                    localStorage.removeItem('userPhoneNumber');
+                    loginName.textContent = '';
                     userLogin.style.display = 'none';
+                    authButton.style.display = 'block';
                 });
             } else {
                 console.error('logoutButton не найден!');
             }
 
-            const username = localStorage.getItem('username');
-            if (username) {
-                authButton.style.display = 'none';
-                logoutButton.style.display = 'block';
-                userLogin.style.display = 'block';
-                loginName.textContent = username;
+            if (logInForm) {
+                logInForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    const username = usernameInput.value.trim();
+                    const password = passwordInput.value.trim();
+
+                    if (!username || !password) {
+                        alert('Введіть ім\'я користувача та пароль');
+                        return;
+                    }
+
+                    localStorage.setItem('username', username);
+                    loginName.textContent = username;
+                    closeModal();
+                    userLogin.style.display = 'block';
+                    authButton.style.display = 'none';
+                    showPhoneModal();
+                });
+            } else {
+                console.error('logInForm не найден!');
             }
 
+            if (submitPhoneNumberButton) {
+                submitPhoneNumberButton.addEventListener('click', function () {
+                    const phoneNumber = phoneNumberInput.value.trim();
+                    if (!phoneNumber) {
+                        phoneNumberInput.style.borderColor = 'red';
+                        phoneNumberInput.setAttribute('placeholder', 'Будь ласка, введіть номер телефону');
+                        setTimeout(() => { 
+                            phoneNumberInput.style.borderColor = ''; 
+                            phoneNumberInput.setAttribute('placeholder', 'Ваш номер телефону'); 
+                        }, 1000); 
+                        return;
+                    }
+                    localStorage.setItem('userPhoneNumber', phoneNumber);
+                    closePhoneModalFunction();
+                });
+            } else {
+                console.error('submitPhoneNumberButton не найден!');
+            }
+
+            if (closePhoneModalButton) {
+                closePhoneModalButton.addEventListener('click', closePhoneModalFunction);
+            } else {
+                console.error('closePhoneModalButton не найден!');
+            }
+
+            loadMenu();
             renderRestaurants();
-
-            if (window.location.pathname.includes("restaurant.html")) {
-                loadMenu();
-            }
         })
         .catch(error => {
-            console.error('Ошибка при загрузке данных ресторанов:', error);
+            console.error('Ошибка загрузки данных ресторанов:', error);
         });
 });

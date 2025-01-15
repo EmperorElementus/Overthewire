@@ -1,4 +1,3 @@
-
 .modal-dialog-auth {
     width: 400px;  
     padding: 20px; 
@@ -180,89 +179,119 @@ input:focus:invalid {
   background-size: 400px; 
 }
 
-
-
-.card {
-  display: flex;
-  flex-direction: column;
-  width: 320px;
-  border-radius: 15px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-  margin: 10px;
-  overflow: hidden;
-  background-color: #ffffff; 
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
-  background-color: #f8f8f8;
-}
-
-
-.card-image {
+/* Новый стиль для корзины */
+.cart-container {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-
-.card-text {
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: #f9f9f9;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  background-color: #fefefe;
-  border-top: 3px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-label {
-  display: block;
-}
-
-
-.card-heading {
+.cart-header {
+  font-size: 1.8rem;
+  font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #444;
-  transition: color 0.3s ease, transform 0.3s ease; 
+  color: #333;
 }
 
-.card-heading:hover {
-  color: #ff4500;
-  transform: scale(1.05);
-}
-
-
-.card-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.card-info-row {
+.cart-item {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
 }
 
-.card-info-label {
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item-name {
+  font-size: 1.2rem;
+  color: #444;
+  width: 60%;
+}
+
+.cart-item-price {
+  font-size: 1.2rem;
+  color: #007bff;
+}
+
+.cart-item-quantity {
+  display: flex;
+  align-items: center;
+}
+
+.cart-item-quantity input {
+  width: 50px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.cart-item-quantity button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cart-item-quantity button:hover {
+  background-color: #0056b3;
+}
+
+.cart-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  font-size: 1.2rem;
   font-weight: bold;
-  color: #555;
 }
 
-.card-info-value {
-  color: #666;
-  margin-left: 12px;
+.cart-summary-total {
+  color: #333;
 }
 
-
-.card:hover .card-heading {
-  color: #ff6347; 
+.cart-summary-price {
+  color: #007bff;
 }
 
+.cart-checkout-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.4rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
 
+.cart-checkout-btn:hover {
+  background-color: #218838;
+}
+
+.cart-empty {
+  font-size: 1.5rem;
+  text-align: center;
+  color: #ff6347;
+  padding: 30px;
+}
+
+/* Стили для кнопок в карточке */
 .card-buttons {
   display: flex;
   justify-content: space-between;
@@ -272,18 +301,19 @@ label {
 
 .button-add-cart {
   background-color: #007bff;
-  color: white;
+  color: black;
   padding: 10px 20px;
-  border: none;
+  border: 2px solid #ccc; /* Серая обводка */
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .button-add-cart:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
+  background-color: #4CAF50; /* Цвет фона при наведении */
+  transform: scale(1.05); /* Легкое увеличение при наведении */
 }
+
 
 .restaurant-info {
   background-color: #f9f9f9; 
@@ -299,7 +329,7 @@ label {
   font-size: 16px;
   color: #333;
   line-height: 1.6; 
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
 }
 
 .restaurant-info strong {
