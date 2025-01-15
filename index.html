@@ -9,30 +9,74 @@
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/styles2.css" />
-    <script src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
+
+    <style>
+        
+        .button {
+            font-size: 24px;
+            padding: 5px 10px; 
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            display: inline-block;
+        }
+		
+        .button-primary {
+            font-size: 24px;
+            padding: 5px 10px; 
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            display: inline-block;
+			background-color: #999;
+        }
+        
+        .button:hover {
+            opacity: 0.7; 
+        }
+
+       
+        @media screen and (max-width: 480px) {
+            .button {
+                font-size: 22px; 
+            }
+        }
+
+        
+        .avatar-icon {
+            font-size: 28px; 
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <a class="logo">
-                <img src="img/icon/logo.svg" alt="Logo" />
-            </a>
-            <label class="address">
-                <input type="text" class="input input-address" placeholder="Адреса доставки" />
-            </label>
-            <button class="button button-primary button-auth" id="authButton">
-                <span class="button-auth-svg"></span>
-                <span class="button-text">Війти</span>
+            <a href="index.html" class="logo">
+				<img src="img/icon/logo.svg" alt="Logo" />
+			</a>
+			<label class="address">
+				<input type="text" class="input input-address" placeholder="Адреса доставки" />
+			</label>
+            
+            
+            <button class="button button-auth" id="authButton">
+                👤 
             </button>
 
-            <button class="button button-primary button-out" id="logoutButton" style="display: none;">
-                <span class="button-text">Вийти</span>
-                <span class="button-out-svg"></span>
+            
+            <button class="button button-out" id="logoutButton" style="display: none;">
+                🚪 
             </button>
+
+            
+            <button class="button button-cart" id="cartButton" onclick="redirectToCart();">
+                🛒 
+            </button>
+
             <span id="userLogin" style="display: none;">Логін: <span id="loginName"></span></span>
         </header>
 
-        <!-- Modal Auth -->
         <div class="modal modal-auth" id="authModal">
             <div class="modal-dialog modal-dialog-auth">
                 <button class="close-auth" id="closeAuth">&times;</button>
@@ -42,18 +86,17 @@
 
                         <!-- Поле логіна -->
                         <label for="username">Логін:</label>
-                        <input type="text" id="username" name="username" required minlength="4" maxlength="16" size="20" autocomplete="username" />
+                        <input type="text" id="username" name="username" placeholder="Введіть ваш логін" required minlength="4" maxlength="16" size="20" autocomplete="username" />
 
                         <!-- Поле пароля -->
-                        <label for="password">Пароль:</label>
-                        <input type="password" id="password" name="password" required minlength="8" maxlength="20" size="20" autocomplete="current-password" />
+                        <label for="password">Пароль (8-20 символів):</label>
+                        <input type="password" id="password" name="password" placeholder="Введіть ваш пароль" required minlength="8" maxlength="20" size="20" autocomplete="current-password" />
 
                         <button type="submit" class="button button-primary">Увійти</button>
                     </fieldset>
                 </form>
             </div>
         </div>
-        <!-- /.container  -->
 
         <main class="main">
             <div class="container">
@@ -66,15 +109,15 @@
                             </div>
                             <div class="swiper-slide kebab">
                                 <h1 class="promo-title">Шашлики зі знижкою 35%</h1>
-                                <p class="promo-text">Замовляйте до 24 серпня та отримайте знижку <br />за промокодом VIVAT</p>
+                                <p class="promo-text">Замовляйте до 24 серпня та отримайте знижку <br/>за промокодом VIVAT</p>
                             </div>
                             <div class="swiper-slide vegetables">
-                                <h1 class="promo-title">  Знижка 20% на всю їжу <br />за промокодом LOVE.JS</h1>
-                                <p class="promo-text">    Разом із подарунковими книгами по фронтенду</p>
+                                <h1 class="promo-title">Знижка 20% на всю їжу за промокодом LOVE.JS</h1>
+                                <p class="promo-text">Разом із подарунковими книгами по фронтенду</p>
                             </div>
                             <div class="swiper-slide sushi">
-                                <h1 class="promo-title">   Сети зі знижкою до 30% у ресторанах</h1>
-                                <p class="promo-text">     Знижки на сети до 1 вересня за промокодом DADADA</p>
+                                <h1 class="promo-title">Сети зі знижкою до 30% у ресторанах</h1>
+                                <p class="promo-text">Знижки на сети до 1 вересня за промокодом DADADA</p>
                             </div>
                         </div>
                         <!-- Navigation -->
@@ -87,16 +130,15 @@
                     <div class="section-heading">
                         <h2 class="section-title">Ресторани</h2>
                         <label class="search">
-                            <input type="text" class="input input-search" placeholder="Пошук страв та ресторанів"/>
-							<button id="clearSearch" class="clear-search-btn">Очистити</button>
+                            <input type="text" class="input input-search" placeholder="Пошук ресторанів" id="searchInput" />
+                            <button id="clearSearch" class="clear-search-btn">X</button>
                         </label>
                     </div>
-                    <section class="cards cards-menu" id="restaurantsContainer">
-                    </section>
+                    <section class="cards cards-menu" id="restaurantsContainer"></section>
                 </section>
             </div>
-            <!-- /.container -->
         </main>
+
         <footer class="footer">
             <div class="container">
                 <div class="footer-block">
@@ -111,14 +153,67 @@
                         <a href="#" class="social-link"><img src="img/social/instagram.svg" alt="instagram" /></a>
                         <a href="#" class="social-link"><img src="img/social/fb.svg" alt="facebook" /></a>
                     </div>
-                    <!-- /.social-links -->
                 </div>
-                <!-- /.footer-block -->
             </div>
         </footer>
     </div>
+
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
+        
+        function getCookie(name) {
+            let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            if (match) return match[2];
+            return null;
+        }
+    
+        
+        function setCookie(name, value, days) {
+            let date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000)); 
+            document.cookie = name + "=" + value + "; expires=" + date.toUTCString() + "; path=/";
+        }
+    
+        
+        function deleteCookie(name) {
+            setCookie(name, "", -1);
+        }
+    
+    
+        function redirectToCart() {
+            if (!getCookie("userLoggedIn")) {
+                alert('Ви повинні увійти, щоб перейти в кошик!');
+                window.location.href = "#"; 
+            } else {
+                window.location.href = 'cart.html';
+            }
+        }
+    
+       
+        document.getElementById('authButton').addEventListener('click', () => {
+            
+            setCookie("userLoggedIn", "true", 7); 
+            alert("Вхід успішний!");
+            document.getElementById('authButton').style.display = "none";
+            document.getElementById('logoutButton').style.display = "inline"; 
+        });
+    
+        
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            deleteCookie("userLoggedIn"); 
+            alert("Ви вийшли!");
+            document.getElementById('authButton').style.display = "inline"; 
+            document.getElementById('logoutButton').style.display = "none"; 
+        });
+    
+        
+        window.onload = function() {
+            if (getCookie("userLoggedIn")) {
+                document.getElementById('authButton').style.display = "none"; 
+                document.getElementById('logoutButton').style.display = "inline"; 
+            }
+        };
+    
         const swiper = new Swiper('.promo-slider', {
             loop: true,
             autoplay: {
@@ -133,8 +228,9 @@
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev'
             },
-			speed: 900,
+            speed: 900,
         });
     </script>
+    
 </body>
 </html>

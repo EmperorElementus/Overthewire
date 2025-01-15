@@ -9,85 +9,147 @@
 	<link rel="stylesheet" href="css/normalize.css" />
 	<link rel="stylesheet" href="css/style.css" />
 	<link rel="stylesheet" href="css/styles2.css" />
-	<script src="js/main.js"></script>
+	<script type="module" src="js/main.js"></script>
 </head>
+<script>
+	let isLoggedIn = false; 
 
+	
+	function redirectToCart() {
+		if (!isLoggedIn) {
+			alert('Ви повинні увійти, щоб перейти в кошик!');
+			window.location.href = "#"; 
+		} else {
+			window.location.href = 'cart.html';
+		}
+	}
+
+
+	document.getElementById('authButton').addEventListener('click', () => {
+		isLoggedIn = true; 
+		alert("Вхід успішний!");
+		document.getElementById('authButton').style.display = "none"; 
+		document.getElementById('logoutButton').style.display = "inline"; 
+	});
+
+	document.getElementById('logoutButton').addEventListener('click', () => {
+		isLoggedIn = false;
+		alert("Ви вийшли!");
+		document.getElementById('authButton').style.display = "inline";
+		document.getElementById('logoutButton').style.display = "none"; 
+	});
+
+	const swiper = new Swiper('.promo-slider', {
+		loop: true,
+		autoplay: {
+			delay: 5000,
+			disableOnInteraction: false
+		},
+		pagination: {
+			el: '.swiper-pagination',
+			clickable: true
+		},
+		navigation: {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev'
+		},
+		speed: 900,
+	});
+</script>
+<style>
+	
+	.button {
+		font-size: 24px;
+		padding: 5px 10px; 
+		border: none;
+		background-color: transparent; 
+		cursor: pointer;
+		display: inline-block;
+	}
+
+	
+	.button:hover {
+		opacity: 0.7; 
+	}
+
+	
+	@media screen and (max-width: 480px) {
+		.button {
+			font-size: 22px; 
+		}
+	}
+
+	
+	.avatar-icon {
+		font-size: 28px; 
+	}
+</style>
 <body>
 	<div class="container">
-		<header class="header">
-			<a href="index.html" class="logo">
+        <header class="header">
+            <a href="index.html" class="logo">
 				<img src="img/icon/logo.svg" alt="Logo" />
 			</a>
 			<label class="address">
 				<input type="text" class="input input-address" placeholder="Адреса доставки" />
 			</label>
-			<button class="button button-primary button-auth" id="authButton">
-				<span class="button-auth-svg"></span>
-				<span class="button-text">Війти</span>
-			  </button>
-		
-			  <button class="button button-primary button-out" id="logoutButton" style="display: none;">
-				<span class="button-text">Вийти</span>
-				<span class="button-out-svg"></span>
-			  </button>
-			  <span id="userLogin" style="display: none;">Логін: <span id="loginName"></span></span>
-			</header>
-		
-			<!-- Modal Auth -->
-<div class="modal modal-auth" id="authModal">
-	<div class="modal-dialog modal-dialog-auth">
-	  <button class="close-auth" id="closeAuth">&times;</button>
-	  <form id="logInForm">
-		<fieldset class="modal-body">
-		  <legend class="modal-title">Авторизація</legend>
-		  
-		  <!-- Поле логіна -->
-		  <label for="username">Логін:</label>
-		  <input 
-			type="text" 
-			id="username" 
-			name="username" 
-			placeholder="Введіть ваш логін" 
-			required 
-			minlength="4" 
-			maxlength="16" 
-			size="20" 
-			autocomplete="username" 
-		  />
-		  
-		  <label for="password">Пароль (8-20 символів):</label>
-		  <input 
-			type="password" 
-			id="password" 
-			name="password" 
-			placeholder="Введіть ваш пароль" 
-			required 
-			minlength="8" 
-			maxlength="20" 
-			size="20" 
-			autocomplete="current-password" 
-		  />
-		  
-		  <button type="submit" class="button button-primary">Увійти</button>
-		</fieldset>
-	  </form>	  
-	</div>
-  </div>
+            
+          
+            <button class="button button-auth" id="authButton">
+                👤 
+            </button>
+
+            
+            <button class="button button-out" id="logoutButton" style="display: none;">
+                🚪 
+            </button>
+
+           
+            <button class="button button-cart" id="cartButton" onclick="redirectToCart();">
+                🛒
+            </button>
+
+            <span id="userLogin" style="display: none;">Логін: <span id="loginName"></span></span>
+        </header>
+
+        <!-- Modal Auth -->
+        <div class="modal modal-auth" id="authModal">
+            <div class="modal-dialog modal-dialog-auth">
+                <button class="close-auth" id="closeAuth">&times;</button>
+                <form id="logInForm">
+                    <fieldset class="modal-body">
+                        <legend class="modal-title">Авторизація</legend>
+
+                        <!-- Поле логіна -->
+                        <label for="username">Логін:</label>
+                        <input type="text" id="username" name="username" placeholder="Введіть ваш логін" required minlength="4" maxlength="16" size="20" autocomplete="username" />
+
+                        <!-- Поле пароля -->
+                        <label for="password">Пароль (8-20 символів):</label>
+                        <input type="password" id="password" name="password" placeholder="Введіть ваш пароль" required minlength="8" maxlength="20" size="20" autocomplete="current-password" />
+
+                        <button type="submit" class="button button-primary">Увійти</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
   <main class="main">
     <div class="container">
         <section class="menu">
-            <h2 class="section-title restaurant-title"></h2> 
-            <div class="restaurant-info" id="restaurantInfo">
+            <h2 class="section-title restaurant-title"></h2>
+            <div class="restaurant-info" id="restaurantInfo"></div>
+            <div class="menu-search-container">
+                <input type="text" id="menuSearchInput" placeholder="Пошук страв" />
+				<button id="clearMenuSearch" class="clear-search-button" aria-label="Очистить поиск">&#10006;</button>
             </div>
             <div class="section-heading">
-                <div class="cards cards-menu" id="menuContainer">
-                </div>
+                <div class="cards cards-menu" id="menuContainer"></div>
+				</div>
+				
             </div>
         </section>
     </div>
 </main>
-
-
 	<footer class="footer">
 		<div class="container">
 			<div class="footer-block">
