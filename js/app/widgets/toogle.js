@@ -1,4 +1,4 @@
-  export var toogle = { 
+export var toogle = { 
     data:function(){ 
       return { 
           value:"" 

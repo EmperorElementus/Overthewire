@@ -2,23 +2,18 @@ export const header = {
     data: function () { 
         return { 
             user: {}, 
-            parent:"", 
-            active:0, 
-            menu:0 
-        } 
+            parent: "", 
+            active: 0, 
+            menu: 0 
+        }; 
     }, 
-    watch:{ 
-    },  
+    watch: {},  
     mounted() { 
-        this.parent = this.$parent.$parent.$parent; ; 
+        this.parent = this.$parent.$parent.$parent; 
     },
-    methods:{ 
-        toogleActive(){ 
-            if(this.active==1){ 
-                this.active = 0; 
-            }else{ 
-                this.active = 1;
-            }
+    methods: { 
+        toogleActive() { 
+            this.active = this.active === 1 ? 0 : 1;
         }
     }, 
     template: `
@@ -32,15 +27,23 @@ export const header = {
                         <div id="menu"> 
                             <ul class="{active:menu==1}" v-if="parent.user && parent.user.type && parent.user.type=='admin'"> 
                                 <li v-if="menu==1" class="al"><i class="fas fa-times" @click="menu=0"></i></li> 
-                                <li><router-link :class="{'router-link-active':$route.path.search('campaign')==1}" to="/campaigns"><i class="fas fa-bullhorn"></i> Campaigns</router-link></li>  
-                                <li><router-link :class="{'router-link-active':$route.path.search('user')==1}" to="/users"><i class="fas fa-users"></i> Users</router-link></li>
+                                <li>
+                                    <router-link :class="{'router-link-active':$route.path.search('user')==1}" to="/users">
+                                        <i class="fas fa-users"></i> Users
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :class="{'router-link-active':$route.path.search('campaign')==1}" to="/campaigns">
+                                        <i class="fas fa-bullhorn"></i> Campaigns
+                                    </router-link>
+                                </li>  
                             </ul> 
                         </div> 
                     </div> 
                     <div class="w10 al" id="user-top" v-if="parent.user && parent.user.user"> 
                         <div id="user-circle" @click="toogleActive()">{{parent.user.user[0]}}</div> 
                         <i @click="toogleActive()" class="fas fa-caret-down"></i> 
-
+  
                         <div id="user-info" :class="{active:active==1}"> 
                         <a href="#" @click.prevent="parent.logout();"><i class="fas fa-sign-out-alt"></i> {{parent.user.user}} Log out</a> 
                         </div> 
@@ -50,4 +53,5 @@ export const header = {
             <msg ref="msg"/>
         </header> 
     `
-}; 
+  };
+  
