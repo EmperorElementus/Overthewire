@@ -41,7 +41,6 @@ export const campaign = {
             data.append('id', this.parent.$route.params.id);
             self.loader = 1;
             axios.post(this.parent.url+"/site/getBanners?auth=" + this.parent.user.auth, data).then(function(response) {
-              if(self.iChart!=-1) self.line(self.data.items[self.iChart]);
                 self.loader=0;
                 self.data = response.data;
                 document.title=self.data.info.title;
@@ -149,7 +148,7 @@ export const campaign = {
                   // }
                 }
               }
-              //document.getElementById('chartOuter').innerHTML = '<div id="chartHints"><div class="chartHintsViews">Views</div><div class="chartHintsClicks">Clicks</div></div>'
+              document.getElementById('chartOuter').innerHTML = '<div id="chartHints"><div class="chartHintsViews">Views</div><div class="chartHintsClicks">Clicks</div><canvas id="myChart"></canvas></div>'
               const ctx = document.getElementById('myChart');
               const xScaleImage = {
                 id:"xScaleImage",
@@ -239,14 +238,17 @@ export const campaign = {
       <div id="spinner" v-if="loader"></div>
       <div class="panelTop">
             <div class="wrapper">
-                <div class="flex">
-                    <div class="w30 ptb30">
+                <div class="flex max-width-pannel">
+                  <div class="pannel">
+                      <div class="w30 ptb30 text-start">
                         <h1 v-if="data && data.info">{{data.info.title}}</h1>
-                    </div>
-                    <div class="w50"></div>
-                    <div class="w20 al ptb20">
-                        <a class="btnS" href="#" @click.prevent="parent.formData=data.info;$refs.new.active=1"><i class="fas fa-edit"> Edit campaign</i></a>
-                    </div>
+                      </div>
+                      <div class="w50"></div>
+                      <div class="w20 ptb20 text-end">
+                          <a class="btnS" href="#" @click.prevent="parent.formData=data.info;$refs.new.active=1"><i class="fas fa-edit"></i> Edit campaign</a>
+                      </div>
+                   </div>
+                    
                 </div>
             </div>
 
@@ -255,21 +257,21 @@ export const campaign = {
                     <div class="w30 ptb25">
                         <input type="date" v-model="date" @change="get();"/> - <input type="date" v-model="date2" @change="get();"/>
                     </div>
-                    <div class="w70 al">
+                    <div class="w70 text-start">
                         <div class="flex cubes">
                             <div class="w30 clicks">
                                 <div>Clicks</div>
                                 {{data.items[iChart].clicks}}
                             </div>
-                            <div class="30 views">
+                            <div class="w30 views">
                                 <div>Views</div>
                                 {{data.items[iChart].views}}
                             </div>
-                            <div class="30 leads">
+                            <div class="w30 leads">
                                 <div>Leads</div>
                                 {{data.items[iChart].leads}}
                             </div>
-                            <div class="30 ctr">
+                            <div class="w30 ctr">
                                 <div>CTR</div>
                                 {{(data.items[iChart].clicks*100/data.items[iChart].views).toFixed(2)}} %
                             </div>
@@ -299,33 +301,34 @@ export const campaign = {
 
             <popup ref="new" :title="(parent.formData && parent.formData.id) ? 'Edit campaign' : 'New campaign'">
                 <div class="form inner-form">
-                <form @submit.prevent="action()" v-if="parent.formData">
-                    <div class="row">
-                    <label>Name</label>
-                    <input type="text" v-model="parent.formData.title" required>
-                    </div>
-                    
-                    <div class="row">
-                    <button class="btn" v-if="parent.formData && parent.formData.id">Edit</button>
-                    <button class="btn" v-if="parent.formData && !parent.formData.id">Add</button>
-                    </div>
-                </form>
+                  <form @submit.prevent="action()" v-if="parent.formData">
+                      <div class="row">
+                      <label>Name</label>
+                      <input type="text" v-model="parent.formData.title" required>
+                      </div>
+                      
+                      <div class="row">
+                        <button class="btn" v-if="parent.formData && parent.formData.id">Edit</button>
+                        <button class="btn" v-if="parent.formData && !parent.formData.id">Add</button>
+                      </div>
+                  </form>
                 </div>
             </popup>
       </div>
       <div class="wrapper">
           <div class="flex max-width-pannel">
-        
-                <div class="w20 ptb30">
+            <div class="pannel">
+                <div class="w20 ptb30 text-start">
                     <h2>Ads</h2>
                 </div>
                 <div class="w60 ptb20 ac">
                     <input type="date" v-model="date" @change="get()" /> - <input type="date" v-model="date2" @change="get()" />
                 </div>
-                <div class="w20 ptb20">
+                <div class="w20 ptb20 text-end">
                     <a class="btnS" href="#" @click.prevent="parent.formData={};$refs.ad.active=1"><i class="fas fa-plus"></i> New</a>
                 </div>
             </div>
+          </div>
 
           <popup ref="ad" :title="(parent.formData && parent.formData.id) ? 'Edit banner' : 'New banner'">
             <div class="form inner-form">
@@ -449,19 +452,19 @@ export const campaign = {
                               </a>
                           </td>
                           <td class="id">
-                              <a href="#" click.prevent="$refs.details.active=1;getDetails(item.id,2)">
+                              <a href="#" @click.prevent="$refs.details.active=1;getDetails(item.id,2)">
                                   <template v-if="item.clicks">{{item.clicks}}</template>
                                   <template v-if="!item.clicks">0</template>
                               </a>
                           </td>
                           <td class="id">
-                              <a href="#" click.prevent="$refs.details.active=1;getDetails(item.id,3)">
+                              <a href="#" @click.prevent="$refs.details.active=1;getDetails(item.id,3)">
                                   <template v-if="item.leads">{{item.leads}}</template>
                                   <template v-if="!item.leads">0</template>
                               </a>
                           </td>
                           <td class="id">
-                              <a href="#" click.prevent="$refs.details.active=1;getDetails(item.id,4)">
+                              <a href="#" @click.prevent="$refs.details.active=1;getDetails(item.id,4)">
                                   <template v-if="item.fclicks">{{item.fclicks}}</template>
                                   <template v-if="!item.fclicks">0</template>
                               </a>
