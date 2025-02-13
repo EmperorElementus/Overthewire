@@ -148,7 +148,7 @@ export const campaign = {
                   // }
                 }
               }
-              document.getElementById('chartOuter').innerHTML = '<div id="chartHints"><div class="chartHintsViews">Views</div><div class="chartHintsClicks">Clicks</div><canvas id="myChart"></canvas></div>'
+              document.getElementById('chartOuter').innerHTML = '<div id="chartHints"><div class="chartHintsViews">Views</div><div class="chartHintsClicks">Clicks</div></div><canvas id="myChart"></canvas>'
               const ctx = document.getElementById('myChart');
               const xScaleImage = {
                 id:"xScaleImage",
@@ -251,7 +251,7 @@ export const campaign = {
                     
                 </div>
             </div>
-
+          </div>
             <popup ref="chart" fullscreen="true" title="Chart">
                 <div class="flex pannel">
                     <div class="w30 ptb25">
@@ -291,8 +291,8 @@ export const campaign = {
                     </div>
                     <div class="w70" id="chartOuter">
                         <div id="chartHints">
-                        <div class="chartHintsViews">Views</div>
-                        <div class="chartHintsClicks">Clicks</div>
+                          <div class="chartHintsViews">Views</div>
+                          <div class="chartHintsClicks">Clicks</div>
                         </div>
                         <canvas id="myChart"></canvas>
                     </div>
